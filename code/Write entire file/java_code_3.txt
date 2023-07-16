@@ -1,0 +1,12 @@
+package com.rosetta.example
+
+import java.io.File
+import java.io.PrintStream
+
+class WriteFile {
+    def static main( String ... args ) {
+        val fout = new PrintStream(new File(args.get(0)))
+        fout.println("Some text.")
+        fout.close
+    }
+}

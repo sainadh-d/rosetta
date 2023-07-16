@@ -1,0 +1,31 @@
+public class Luhn {
+  public static void main(String[] args) {
+    System.out.println(luhnTest(49927398716L));
+    System.out.println(luhnTest(499273987163L));
+    System.out.println(luhnTest(1234567L));
+    System.out.println(luhnTest(0L));
+  }
+
+  public static boolean luhnTest(Long digits) {
+    int s1 = 0, s2 = 0;
+    //Use an alternator for separate odd/even processing
+    boolean alternator = true;
+
+    //Confine digit numbers to 8 - 19 per ISO
+    if (digits < 1e7 || digits >= 1e19) return false;
+
+    for ( int i = 0; digits > 0; ++i) {
+      Long oneDigit = digits % 10;
+
+      if (alternator) {
+        s1 += oneDigit.intValue();
+      } else {
+        oneDigit *= 2;
+        s2 += oneDigit > 9 ? oneDigit.intValue() - 9: oneDigit.intValue();
+      }
+      digits /= 10;
+      alternator = !alternator;
+    }
+    return (s1 + s2) % 10 == 0 ? true : false;
+  }
+}

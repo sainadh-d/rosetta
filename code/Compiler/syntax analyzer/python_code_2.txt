@@ -1,0 +1,11 @@
+def prt_ast(t)
+    if t == NULL
+        print(";\n")
+    else
+        print(t.node_type)
+        if t.node_type in [Identifier, Integer, String]     # leaf node
+            print the value of the Ident, Integer or String, "\n"
+        else
+            print("\n")
+            prt_ast(t.left)
+            prt_ast(t.right)

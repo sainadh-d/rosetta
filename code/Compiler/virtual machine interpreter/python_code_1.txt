@@ -1,0 +1,38 @@
+def run_vm(data_size)
+    int stack[data_size + 1000]
+    set stack[0..data_size - 1] to 0
+    int pc = 0
+    while True:
+        op = code[pc]
+        pc += 1
+
+        if op == FETCH:
+            stack.append(stack[bytes_to_int(code[pc:pc+word_size])[0]]);
+            pc += word_size
+        elif op == STORE:
+            stack[bytes_to_int(code[pc:pc+word_size])[0]] = stack.pop();
+            pc += word_size
+        elif op == PUSH:
+            stack.append(bytes_to_int(code[pc:pc+word_size])[0]);
+            pc += word_size
+        elif op == ADD:   stack[-2] += stack[-1]; stack.pop()
+        elif op == SUB:   stack[-2] -= stack[-1]; stack.pop()
+        elif op == MUL:   stack[-2] *= stack[-1]; stack.pop()
+        elif op == DIV:   stack[-2] /= stack[-1]; stack.pop()
+        elif op == MOD:   stack[-2] %= stack[-1]; stack.pop()
+        elif op == LT:    stack[-2] = stack[-2] <  stack[-1]; stack.pop()
+        elif op == GT:    stack[-2] = stack[-2] >  stack[-1]; stack.pop()
+        elif op == LE:    stack[-2] = stack[-2] <= stack[-1]; stack.pop()
+        elif op == GE:    stack[-2] = stack[-2] >= stack[-1]; stack.pop()
+        elif op == EQ:    stack[-2] = stack[-2] == stack[-1]; stack.pop()
+        elif op == NE:    stack[-2] = stack[-2] != stack[-1]; stack.pop()
+        elif op == AND:   stack[-2] = stack[-2] and stack[-1]; stack.pop()
+        elif op == OR:    stack[-2] = stack[-2] or  stack[-1]; stack.pop()
+        elif op == NEG:   stack[-1] = -stack[-1]
+        elif op == NOT:   stack[-1] = not stack[-1]
+        elif op == JMP:   pc += bytes_to_int(code[pc:pc+word_size])[0]
+        elif op == JZ:    if stack.pop() then pc += word_size else pc += bytes_to_int(code[pc:pc+word_size])[0]
+        elif op == PRTC:  print stack[-1] as a character; stack.pop()
+        elif op == PRTS:  print the constant string referred to by stack[-1]; stack.pop()
+        elif op == PRTI:  print stack[-1] as an integer; stack.pop()
+        elif op == HALT:  break

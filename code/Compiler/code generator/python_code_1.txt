@@ -1,0 +1,21 @@
+def load_ast()
+    line = readline()
+    # Each line has at least one token
+    line_list = tokenize the line, respecting double quotes
+
+    text = line_list[0] # first token is always the node type
+
+    if text == ";"
+        return None
+
+    node_type = text # could convert to internal form if desired
+
+    # A line with two tokens is a leaf node
+    # Leaf nodes are: Identifier, Integer String
+    # The 2nd token is the value
+    if len(line_list) > 1
+        return make_leaf(node_type, line_list[1])
+
+    left = load_ast()
+    right = load_ast()
+    return make_node(node_type, left, right)

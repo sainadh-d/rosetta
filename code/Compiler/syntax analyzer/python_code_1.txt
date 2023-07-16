@@ -1,0 +1,85 @@
+def expr(p)
+    if tok is "("
+        x = paren_expr()
+    elif tok in ["-", "+", "!"]
+        gettok()
+        y = expr(precedence of operator)
+        if operator was "+"
+            x = y
+        else
+            x = make_node(operator, y)
+    elif tok is an Identifier
+        x = make_leaf(Identifier, variable name)
+        gettok()
+    elif tok is an Integer constant
+        x = make_leaf(Integer, integer value)
+        gettok()
+    else
+        error()
+
+    while tok is a binary operator and precedence of tok >= p
+        save_tok = tok
+        gettok()
+        q = precedence of save_tok
+        if save_tok is not right associative
+            q += 1
+        x = make_node(Operator save_tok represents, x, expr(q))
+
+    return x
+
+def paren_expr()
+    expect("(")
+    x = expr(0)
+    expect(")")
+    return x
+
+def stmt()
+    t = NULL
+    if accept("if")
+        e = paren_expr()
+        s = stmt()
+        t = make_node(If, e, make_node(If, s, accept("else") ? stmt() : NULL))
+    elif accept("putc")
+        t = make_node(Prtc, paren_expr())
+        expect(";")
+    elif accept("print")
+        expect("(")
+        repeat
+            if tok is a string
+                e = make_node(Prts, make_leaf(String, the string))
+                gettok()
+            else
+                e = make_node(Prti, expr(0))
+
+            t = make_node(Sequence, t, e)
+        until not accept(",")
+        expect(")")
+        expect(";")
+    elif tok is ";"
+        gettok()
+    elif tok is an Identifier
+        v = make_leaf(Identifier, variable name)
+        gettok()
+        expect("=")
+        t = make_node(Assign, v, expr(0))
+        expect(";")
+    elif accept("while")
+        e = paren_expr()
+        t = make_node(While, e, stmt()
+    elif accept("{")
+        while tok not equal "}" and tok not equal end-of-file
+            t = make_node(Sequence, t, stmt())
+        expect("}")
+    elif tok is end-of-file
+        pass
+    else
+        error()
+    return t
+
+def parse()
+    t = NULL
+    gettok()
+    repeat
+        t = make_node(Sequence, t, stmt())
+    until tok is end-of-file
+    return t

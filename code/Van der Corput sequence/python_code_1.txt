@@ -1,0 +1,9 @@
+>>> def base10change(n, base):
+	digits = []
+	while n:
+		n,remainder = divmod(n, base)
+		digits.insert(0, remainder)
+	return digits
+
+>>> base10change(11, 2)
+[1, 0, 1, 1]

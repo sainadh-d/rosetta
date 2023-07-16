@@ -1,0 +1,32 @@
+interp(x)
+    if x == NULL return NULL
+    elif x.node_type == Integer return x.value converted to an integer
+    elif x.node_type == Ident   return the current value of variable x.value
+    elif x.node_type == String  return x.value
+    elif x.node_type == Assign
+                    globals[x.left.value] = interp(x.right)
+                    return NULL
+    elif x.node_type is a binary operator return interp(x.left) operator interp(x.right)
+    elif x.node_type is a unary operator, return return operator interp(x.left)
+    elif x.node_type ==  If
+                    if (interp(x.left)) then interp(x.right.left)
+                    else interp(x.right.right)
+                    return NULL
+    elif x.node_type == While
+                    while (interp(x.left)) do interp(x.right)
+                    return NULL
+    elif x.node_type == Prtc
+                    print interp(x.left) as a character, no newline
+                    return NULL
+    elif x.node_type == Prti
+                    print interp(x.left) as an integer, no newline
+                    return NULL
+    elif x.node_type == Prts
+                    print interp(x.left) as a string, respecting newlines ("\n")
+                    return NULL
+    elif x.node_type == Sequence
+                    interp(x.left)
+                    interp(x.right)
+                    return NULL
+    else
+        error("unknown node type")
